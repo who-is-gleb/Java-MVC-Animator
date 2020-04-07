@@ -1,5 +1,9 @@
 package cs3500.animator.util;
 
+/**
+ * The interface for the AnimationBuilder, that is implemented by the Builder inside of the
+ * implementation of our model.
+ */
 public interface AnimationBuilder<Doc> {
   /**
    * Constructs a final document.

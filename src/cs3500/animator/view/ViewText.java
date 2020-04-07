@@ -1,12 +1,10 @@
 package cs3500.animator.view;
 
-//TODO: Implement this entire class (this one is the easiest, since we can just yoink the code from
-// the model and put it here for the most part
-
 import cs3500.excellence.hw05.ExcellenceOperations;
 import cs3500.excellence.hw05.Shape;
 import cs3500.excellence.hw05.Ellipse;
 import cs3500.excellence.hw05.Rectangle;
+import java.awt.event.ActionListener;
 import java.io.PrintStream;
 
 /**
@@ -23,17 +21,47 @@ public class ViewText implements ExcellenceView {
   }
 
   @Override
+  public void toggleLooping() {
+    throw new UnsupportedOperationException("Can't call toggleLooping on this view!");
+  }
+
+  @Override
+  public void togglePlayback() {
+    throw new UnsupportedOperationException("Can't call togglePlayback on this view!");
+  }
+
+  @Override
+  public void restart() {
+    throw new UnsupportedOperationException("Can't call restart on this view!");
+  }
+
+  @Override
+  public void increaseRate() {
+    throw new UnsupportedOperationException("Can't call increaseRate on this view!");
+  }
+
+  @Override
+  public void decreaseRate() {
+    throw new UnsupportedOperationException("Can't call decreaseRate on this view!");
+  }
+
+  @Override
+  public void setListener(ActionListener listener) {
+    throw new UnsupportedOperationException("Can't call setListener on this view!");
+  }
+
+  @Override
   public void setTickRate(int rate) {
-    //Unused in the text view
+    //Tickrate doesn't matter here, but don't throw an error!
   }
 
   @Override
   public void refresh() {
-    //Unused in the text view
+    //Refresh doesn't matter here, but don't throw an error!
   }
 
   @Override
-  public void go(PrintStream out) {
+  public void startView(PrintStream out) {
     out.append(
         "canvas " + canvasInfo[0] + " " + canvasInfo[1] + " " + canvasInfo[2] + " " + canvasInfo[3]
             + "\n");

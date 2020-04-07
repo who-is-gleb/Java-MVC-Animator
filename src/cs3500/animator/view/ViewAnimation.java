@@ -3,6 +3,7 @@ package cs3500.animator.view;
 import cs3500.excellence.hw05.ExcellenceOperations;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
 import java.io.PrintStream;
 import javax.swing.JFrame;
 import javax.swing.Timer;
@@ -43,6 +44,36 @@ public class ViewAnimation extends JFrame implements ExcellenceView {
   }
 
   @Override
+  public void toggleLooping() {
+    throw new UnsupportedOperationException("Can't call toggleLooping on this view!");
+  }
+
+  @Override
+  public void togglePlayback() {
+    throw new UnsupportedOperationException("Can't call togglePlayback on this view!");
+  }
+
+  @Override
+  public void restart() {
+    throw new UnsupportedOperationException("Can't call restart on this view!");
+  }
+
+  @Override
+  public void increaseRate() {
+    throw new UnsupportedOperationException("Can't call increaseRate on this view!");
+  }
+
+  @Override
+  public void decreaseRate() {
+    throw new UnsupportedOperationException("Can't call decreaseRate on this view!");
+  }
+
+  @Override
+  public void setListener(ActionListener listener) {
+    throw new UnsupportedOperationException("Can't call setListener on this view!");
+  }
+
+  @Override
   public void setTickRate(int rate) {
     if (rate <= 0) {
       throw new IllegalArgumentException(
@@ -58,7 +89,7 @@ public class ViewAnimation extends JFrame implements ExcellenceView {
   }
 
   @Override
-  public void go(PrintStream out) {
+  public void startView(PrintStream out) {
 
     //Set up the clock that ticks
     //There's a lambda expression that acts as the ActionListener for the timer. It listens for each

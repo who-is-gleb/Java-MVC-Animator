@@ -44,7 +44,7 @@ public class ExcellenceModel implements ExcellenceOperations {
         return;
       }
     }
-    throw new IllegalArgumentException("There's no shape named that!");
+    throw new IllegalArgumentException("There's no shape named " + name + "!");
   }
 
   @Override
@@ -58,7 +58,7 @@ public class ExcellenceModel implements ExcellenceOperations {
         return;
       }
     }
-    throw new IllegalArgumentException("There's no shape named that!");
+    throw new IllegalArgumentException("There's no shape named " + name + "!");
   }
 
   @Override
@@ -76,7 +76,7 @@ public class ExcellenceModel implements ExcellenceOperations {
         return;
       }
     }
-    throw new IllegalArgumentException("There's no shape named that!");
+    throw new IllegalArgumentException("There's no shape named " + name + "!");
   }
 
   @Override
@@ -116,13 +116,10 @@ public class ExcellenceModel implements ExcellenceOperations {
 
     @Override
     public AnimationBuilder<ExcellenceOperations> declareShape(String name, String type) {
-      switch (type) {
-        case "rectangle":
-          model.addShape(new Rectangle(name));
-          break;
-        case "ellipse":
-          model.addShape(new Ellipse(name));
-          break;
+      if (type.equals("rectangle")) {
+        model.addShape(new Rectangle(name));
+      } else if (type.equals("ellipse")) {
+        model.addShape(new Ellipse(name));
       }
       return this;
     }

@@ -1,5 +1,6 @@
 package cs3500.animator.view;
 
+import java.awt.event.ActionListener;
 import java.io.PrintStream;
 
 /**
@@ -9,6 +10,48 @@ import java.io.PrintStream;
 public interface ExcellenceView {
 
   //All implementations of this need a constructor that takes an ExcellenceOperations!
+
+  /**
+   * Toggles if the animation should loop.
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void toggleLooping();
+
+  /**
+   * Toggles playback on the view.
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void togglePlayback();
+
+  /**
+   * Restarts the playback in this view.
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void restart();
+
+  /**
+   * Increases the tickRate of this view by one.
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void increaseRate();
+
+  /**
+   * Decreases the tickRate of this view by one.
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void decreaseRate();
+
+  /**
+   * Sets the ActionListener that the buttons in this view set off.
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void setListener(ActionListener listener);
 
   /**
    * Sets the tickRate for this animation. If this isn't called, the default tickRate remains at one
@@ -31,5 +74,5 @@ public interface ExcellenceView {
    *
    * @param out The PrintStream we're outputting to
    */
-  void go(PrintStream out);
+  void startView(PrintStream out);
 }

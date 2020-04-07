@@ -23,6 +23,8 @@ public class ViewFactory {
         return new ViewAnimation(model);
       case "svg":
         return new ViewSVG(model);
+      case "edit":
+        return new ViewEditor(model);
       default:
         return null;
     }

@@ -1,5 +1,7 @@
 package cs3500.animator;
 
+import cs3500.animator.controller.EditController;
+import cs3500.animator.controller.ExcellenceController;
 import cs3500.animator.util.AnimationReader;
 import cs3500.animator.view.ExcellenceView;
 import cs3500.animator.view.ViewFactory;
@@ -87,8 +89,10 @@ public class Excellence {
     ourView.setTickRate(speed);
 
     //Give the view the output, and set it going! The view takes over from here.
-    ourView.go(out);
-    //System.exit(0);
+    //ourView.startView(out);
+
+    ExcellenceController ourController = new EditController(ourModel, ourView);
+    ourController.beginControl();
   }
 
   /**

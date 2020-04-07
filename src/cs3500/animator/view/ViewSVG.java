@@ -1,12 +1,14 @@
 package cs3500.animator.view;
 
-//TODO: Implement this entire class
-
 import cs3500.excellence.hw05.Ellipse;
 import cs3500.excellence.hw05.ExcellenceOperations;
 import cs3500.excellence.hw05.Rectangle;
 import cs3500.excellence.hw05.Shape;
+import java.awt.event.ActionListener;
 import java.io.PrintStream;
+
+//TODO: Branden, please finish this and write the tests. It didn't work when you wrote it for
+// Assignment 6, so can you fix it for Assignment 7? I've almost everything else so far.
 
 /**
  * A SVG view for our animation program. Outputs text in the style of an SVG file for the given
@@ -23,17 +25,47 @@ public class ViewSVG implements ExcellenceView {
   }
 
   @Override
+  public void toggleLooping() {
+    throw new UnsupportedOperationException("Can't call toggleLooping on this view!");
+  }
+
+  @Override
+  public void togglePlayback() {
+    throw new UnsupportedOperationException("Can't call togglePlayback on this view!");
+  }
+
+  @Override
+  public void restart() {
+    throw new UnsupportedOperationException("Can't call restart on this view!");
+  }
+
+  @Override
+  public void increaseRate() {
+    throw new UnsupportedOperationException("Can't call increaseRate on this view!");
+  }
+
+  @Override
+  public void decreaseRate() {
+    throw new UnsupportedOperationException("Can't call decreaseRate on this view!");
+  }
+
+  @Override
+  public void setListener(ActionListener listener) {
+    throw new UnsupportedOperationException("Can't call setListener on this view!");
+  }
+
+  @Override
   public void setTickRate(int rate) {
-    //Unused here
+    //Tickrate doesn't matter here, but don't throw an error!
   }
 
   @Override
   public void refresh() {
-    //Unused here
+    //Refresh doesn't matter here, but don't throw an error!
   }
 
   @Override
-  public void go(PrintStream out) {
+  public void startView(PrintStream out) {
     out.append(
         "<svg width=\"" + canvasInfo[0] + "\" height=\"" + canvasInfo[3] + "\" version=\"1.1\" "
             + "xmnls=\"http://www.w3.org/2000/svg\">\n");
