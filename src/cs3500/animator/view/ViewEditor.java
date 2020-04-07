@@ -3,9 +3,9 @@ package cs3500.animator.view;
 import cs3500.animator.controller.EditController;
 import cs3500.excellence.hw05.ExcellenceOperations;
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
 import javax.swing.JButton;
@@ -27,6 +27,8 @@ public class ViewEditor extends JFrame implements ExcellenceView {
   boolean looping = false;
   boolean playing = true;
 
+  Timer timer;
+
   private JPanel buttonPanel;
   private JButton playPauseButton, toggleLoopButton, restartButton, speedUpButton, speedDownButton;
   private JLabel currentTickRate;
@@ -42,6 +44,13 @@ public class ViewEditor extends JFrame implements ExcellenceView {
     this.tick = 0;
     this.looping = false;
     this.playing = true;
+
+    //set up the timer that will be used
+    timer = new Timer(1000 / tickRate, e -> {
+      refresh();
+      tick++;
+    });
+    timer.setInitialDelay(0);
 
     //get the canvas info from the model and set up the width and height
     this.canvasInfo = model.getCanvasInfo();
@@ -64,7 +73,7 @@ public class ViewEditor extends JFrame implements ExcellenceView {
     buttonPanel.add(restartButton);
 
     //play button
-    playPauseButton = new JButton("Play/Pause");
+    playPauseButton = new JButton("Pause");
     playPauseButton.setActionCommand("playPause");
     buttonPanel.add(playPauseButton);
 
@@ -87,19 +96,27 @@ public class ViewEditor extends JFrame implements ExcellenceView {
     speedUpButton.setActionCommand("speedUp");
     buttonPanel.add(speedUpButton);
 
+    //set up the rest of the frame
+    buttonPanel.setPreferredSize(new Dimension(600, 100));
     this.pack();
-
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
   @Override
   public void toggleLooping() {
     looping = !looping;
+    refresh();
   }
 
   @Override
   public void togglePlayback() {
     playing = !playing;
+    if (playing) {
+      timer.start();
+    } else {
+      timer.stop();
+    }
+    refresh();
   }
 
   @Override
@@ -111,16 +128,17 @@ public class ViewEditor extends JFrame implements ExcellenceView {
   @Override
   public void increaseRate() {
     tickRate++;
+    timer.setDelay(1000 / tickRate);
     currentTickRate.setText(String.valueOf(tickRate));
   }
 
   @Override
   public void decreaseRate() {
-    tickRate--;
+    tickRate = tickRate - 1;
     if (tickRate <= 0) {
       tickRate = 0;
     }
-    System.out.print("DECREASE TO " + tickRate);
+    timer.setDelay(1000 / tickRate);
     currentTickRate.setText(String.valueOf(tickRate));
   }
 
@@ -140,23 +158,35 @@ public class ViewEditor extends JFrame implements ExcellenceView {
           "You've set the tick rate to 0 or less, which is not allowed!");
     }
     tickRate = rate;
+    timer.setDelay(1000 / tickRate);
     currentTickRate.setText(String.valueOf(tickRate));
   }
 
   @Override
   public void refresh() {
+
+    if (!playing) {
+      playPauseButton.setBackground(Color.red);
+      playPauseButton.setOpaque(true);
+    } else {
+      playPauseButton.setBackground(Color.white);
+      playPauseButton.setOpaque(false);
+    }
+
+    if (looping) {
+      toggleLoopButton.setBackground(Color.red);
+      toggleLoopButton.setOpaque(true);
+    } else {
+      toggleLoopButton.setBackground(Color.white);
+      toggleLoopButton.setOpaque(false);
+    }
+
     panel.setTick(tick);
     panel.repaint();
   }
 
   @Override
   public void startView(PrintStream out) {
-
-    //TODO: Replace this old clock with something better
-    Timer timer = new Timer(1000 / tickRate, e -> {
-      refresh();
-      tick++;
-    });
 
     //set this view to being visible
     this.setVisible(true);

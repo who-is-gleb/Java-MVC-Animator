@@ -10,7 +10,7 @@ public class EditController implements ExcellenceController, ActionListener {
   private ExcellenceOperations model;
   private ExcellenceView view;
 
-  public EditController (ExcellenceOperations model, ExcellenceView view) {
+  public EditController(ExcellenceOperations model, ExcellenceView view) {
     this.model = model;
     this.view = view;
   }
@@ -24,11 +24,21 @@ public class EditController implements ExcellenceController, ActionListener {
   @Override
   public void actionPerformed(ActionEvent event) {
     switch (event.getActionCommand()) {
-      case "restart": view.restart();
-      case "playPause": view.togglePlayback();
-      case "toggleLoop": view.toggleLooping();
-      case "speedDown": view.decreaseRate();
-      case "speedUp": view.increaseRate();
+      case "restart":
+        view.restart();
+        break;
+      case "playPause":
+        view.togglePlayback();
+        break;
+      case "toggleLoop":
+        view.toggleLooping();
+        break;
+      case "speedDown":
+        view.decreaseRate();
+        break;
+      case "speedUp":
+        view.increaseRate();
+        break;
     }
   }
 }
