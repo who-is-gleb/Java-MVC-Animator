@@ -47,7 +47,7 @@ public class ViewText implements ExcellenceView {
 
   @Override
   public void setListener(ActionListener listener) {
-    //throw new UnsupportedOperationException("Can't call setListener on this view!");
+    //setListener doesn't matter, but don't throw an error!
   }
 
   @Override

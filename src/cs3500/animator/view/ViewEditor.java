@@ -155,14 +155,12 @@ public class ViewEditor extends JFrame implements ExcellenceView {
 
   @Override
   public void forwardTick() {
-    System.out.print("THE BUTTON WORKS!");
     tick = tick + 1;
     refresh();
   }
 
   @Override
   public void backTick() {
-    System.out.print("THE BUTTON WORKS!");
     tick =  tick - 1;
     if (tick < 0) {
       tick = 0;

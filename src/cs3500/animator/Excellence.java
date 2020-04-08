@@ -92,7 +92,7 @@ public class Excellence {
     //ourView.startView(out);
 
     ExcellenceController ourController = new EditController(ourModel, ourView);
-    ourController.beginControl();
+    ourController.beginControl(out);
   }
 
   /**
