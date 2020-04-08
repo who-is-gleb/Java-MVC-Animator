@@ -43,6 +43,43 @@ public interface ExcellenceOperations {
   void removeShape(String name);
 
   /**
+   * Adds a new keyframe to the shape with the given name, with default values. If the keyframe
+   * already exists, resets it to default values.
+   *
+   * @param name The name of the shape you are adding a change to
+   * @param tick The tick that this keyframe is at
+   * @throws IllegalArgumentException if the given name does not exist
+   */
+  void addKeyframeToShape(String name, int tick);
+
+  /**
+   * Adds a new keyframe to the shape with the given name, with the given values. If the keyframe
+   * already exists, set it to the given values.
+   *
+   * @param name   The name of the shape you are adding a change to
+   * @param tick   The tick that this keyframe is at
+   * @param x      x position of the keyframe
+   * @param y      y position of the keyframe
+   * @param width  width of the keyframe
+   * @param height height of the keyframe
+   * @param red    red color value of the keyframe
+   * @param green  green color value of the keyframe
+   * @param blue   blue color value of the keyframe
+   * @throws IllegalArgumentException if the given name does not exist
+   */
+  void addKeyframeToShape(String name, int tick, int x, int y, int width, int height, int red,
+      int green, int blue);
+
+  /**
+   * Removes a keyframe to the shape with the given name at the given tick.
+   *
+   * @param name The name of the shape you are removing a keyframe from
+   * @param tick The tick that this keyframe is at
+   * @throws IllegalArgumentException if the given name does not exist
+   */
+  void removeKeyframeFromShape(String name, int tick);
+
+  /**
    * Adds a new change to the shape with the given name, with the given parameters. Throws an error
    * if there's no shape at that index.
    *

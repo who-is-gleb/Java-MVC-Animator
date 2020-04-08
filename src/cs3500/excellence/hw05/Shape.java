@@ -190,11 +190,12 @@ public abstract class Shape {
 
   /**
    * Adds a keyframe at the given tick, using default values or figuring out what they should be
-   * from the surrounding keyframes.
+   * from the surrounding keyframes. If there's already a keyframe there, reset it to default
+   * values.
    *
    * @param tick the tick we are adding a keyframe at
    */
-  public void addKeyframe(int tick) {
+  public void setKeyframe(int tick) {
     //if there's no other keyframes, add one here
     if (keyframes.size() == 0) {
       //add one with default values.
@@ -208,29 +209,44 @@ public abstract class Shape {
       return;
     } else if (keyframes.size() == 1 && keyframes.get(0).get(0) == tick) {
       //there's already a keyframe here, do something?
+      //exit since we're done
+      return;
     }
     //for each keyframe
     for (ArrayList<Integer> thisKeyframe : keyframes) {
       //is the keyframe we're adding before this one, and we're not looking at the first one?
       if (tick < thisKeyframe.get(0) && keyframes.indexOf(thisKeyframe) > 0) {
-        //add one, calculating the values to use
-        keyframes.add(keyframeTweener(tick, keyframes.get(keyframes.indexOf(thisKeyframe) - 1),
-            thisKeyframe));
+        //add one here, calculating the values to use
+        keyframes.add(keyframes.indexOf(thisKeyframe),
+            keyframeTweener(tick, keyframes.get(keyframes.indexOf(thisKeyframe) - 1),
+                thisKeyframe));
         //exit since we're done
         return;
-      } else if (tick > thisKeyframe.get(0)) {
-        //if we're after the last one in a list, add a new one with default values.
-        keyframes.add(new ArrayList<>(
-            Arrays.asList(tick, 0, 0, 10, 10, 255, 255, 255)));//exit since we're done
+      } else if (tick > thisKeyframe.get(0)
+          && keyframes.indexOf(thisKeyframe) == keyframes.size() - 1) {
+        //add it to the end
+        keyframes
+            .add(new ArrayList<>(Arrays.asList(tick, 0, 0, 10, 10, 255, 255, 255)));
+        //exit since we're done
         return;
       } else if (tick == thisKeyframe.get(0)) {
-        //there's already a keyframe here, do something?
+        //we're replacing the keyframe here with a new default one
+        //this shouldn't ever get called since the controller should probably be calling remove instead
+        keyframes.set(keyframes.indexOf(thisKeyframe),
+            new ArrayList<>(Arrays.asList(tick, 0, 0, 10, 10, 255, 255, 255)));
+        //exit since we're done
+        return;
       }
     }
   }
 
-  //TODO:JavaDoc
-  public void addKeyframe(int tick, int x, int y, int width, int height, int red, int green,
+  /**
+   * Alternate constuctor for setKeyframe. Adds a keyframe at the given tick, using given values. If
+   * there's already a keyframe there, set it to the given values.
+   *
+   * @param tick the tick we are adding a keyframe at
+   */
+  public void setKeyframe(int tick, int x, int y, int width, int height, int red, int green,
       int blue) {
     //if there's no other keyframes, add one
     if (keyframes.size() == 0) {
@@ -247,14 +263,29 @@ public abstract class Shape {
               new ArrayList<>(Arrays.asList(tick, x, y, width, height, red, green, blue)));
           //exit since we're done
           return;
+        } else if (tick > thisKeyframe.get(0)
+            && keyframes.indexOf(thisKeyframe) == keyframes.size() - 1) {
+          //add it to the end
+          keyframes
+              .add(new ArrayList<>(Arrays.asList(tick, x, y, width, height, red, green, blue)));
+          //exit since we're done
+          return;
+        } else if (tick == thisKeyframe.get(0)) {
+          //we're replacing the keyframe here with this new info
+          keyframes.set(keyframes.indexOf(thisKeyframe),
+              new ArrayList<>(Arrays.asList(tick, x, y, width, height, red, green, blue)));
+          //exit since we're done
+          return;
         }
       }
-      //add it to the end if we've made it this far
-      keyframes.add(new ArrayList<>(Arrays.asList(tick, x, y, width, height, red, green, blue)));
     }
   }
 
-  //TODO: JavaDoc
+  /**
+   * Removes the keyframe at the given tick.
+   *
+   * @param tick the tick we are removing a keyframe from
+   */
   public void removeKeyframe(int tick) {
     //for each keyframe
     for (ArrayList<Integer> thisKeyframe : keyframes) {
@@ -265,6 +296,7 @@ public abstract class Shape {
         return;
       }
     }
+    throw new IllegalArgumentException("There's no keyframe at tick " + tick + "!");
   }
 
   //TODO: JavaDoc

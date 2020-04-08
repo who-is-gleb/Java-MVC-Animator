@@ -33,6 +33,20 @@ public interface ExcellenceView {
   void restart();
 
   /**
+   * Adds one to the current tick
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void forwardTick();
+
+  /**
+   * Removes one from the current tick, stopping at zero.
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void backTick();
+
+  /**
    * Increases the tickRate of this view by one.
    *
    * @throws UnsupportedOperationException if this view does not support this.

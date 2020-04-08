@@ -40,6 +40,16 @@ public class ViewSVG implements ExcellenceView {
   }
 
   @Override
+  public void forwardTick() {
+    throw new UnsupportedOperationException("Can't call forwardTick on this view!");
+  }
+
+  @Override
+  public void backTick() {
+    throw new UnsupportedOperationException("Can't call backTick on this view!");
+  }
+
+  @Override
   public void increaseRate() {
     throw new UnsupportedOperationException("Can't call increaseRate on this view!");
   }
@@ -51,7 +61,7 @@ public class ViewSVG implements ExcellenceView {
 
   @Override
   public void setListener(ActionListener listener) {
-    throw new UnsupportedOperationException("Can't call setListener on this view!");
+    //throw new UnsupportedOperationException("Can't call setListener on this view!");
   }
 
   @Override

@@ -48,6 +48,40 @@ public class ExcellenceModel implements ExcellenceOperations {
   }
 
   @Override
+  public void addKeyframeToShape(String name, int tick) {
+    for (Shape s : shapeArrayList) {
+      if (s.name.equals(name)) {
+        s.setKeyframe(tick);
+        return;
+      }
+    }
+    throw new IllegalArgumentException("There's no shape named " + name + "!");
+  }
+
+  @Override
+  public void addKeyframeToShape(String name, int tick, int x, int y, int width, int height,
+      int red, int green, int blue) {
+    for (Shape s : shapeArrayList) {
+      if (s.name.equals(name)) {
+        s.setKeyframe(tick, x, y, width, height, red, green, blue);
+        return;
+      }
+    }
+    throw new IllegalArgumentException("There's no shape named " + name + "!");
+  }
+
+  @Override
+  public void removeKeyframeFromShape(String name, int tick) {
+    for (Shape s : shapeArrayList) {
+      if (s.name.equals(name)) {
+        s.removeKeyframe(tick);
+        return;
+      }
+    }
+    throw new IllegalArgumentException("There's no shape named " + name + "!");
+  }
+
+  @Override
   public void addChangeToShape(String name, int t1, int x1, int y1, int w1, int h1, int r1,
       int g1,
       int b1, int t2, int x2, int y2, int w2, int h2, int r2, int g2, int b2) {
@@ -129,15 +163,17 @@ public class ExcellenceModel implements ExcellenceOperations {
         int w1, int h1, int r1, int g1, int b1, int t2, int x2, int y2, int w2, int h2, int r2,
         int g2, int b2) {
       model.addChangeToShape(name, t1, x1, y1, w1, h1, r1, g1, b1, t2, x2, y2, w2, h2, r2, g2, b2);
+      //also add all the changes as keyframes, since that what we really care about
+      model.addKeyframeToShape(name, t1, x1, y1, w1, h1, r1, g1, b1);
+      model.addKeyframeToShape(name, t2, x2, y2, w2, h2, r2, g2, b2);
       return this;
     }
 
-    //This method is unused at the moment, and is not necessary for Assignment 6
     @Override
     public AnimationBuilder<ExcellenceOperations> addKeyframe(String name, int t, int x, int y,
         int w, int h, int r, int g, int b) {
-      return null;
+      model.addKeyframeToShape(name, t, x, y, w, h, r, g, b);
+      return this;
     }
   }
-
 }

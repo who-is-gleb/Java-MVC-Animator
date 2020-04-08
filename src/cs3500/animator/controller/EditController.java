@@ -2,6 +2,7 @@ package cs3500.animator.controller;
 
 import cs3500.animator.view.ExcellenceView;
 import cs3500.excellence.hw05.ExcellenceOperations;
+import cs3500.excellence.hw05.Shape;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -38,6 +39,12 @@ public class EditController implements ExcellenceController, ActionListener {
         break;
       case "speedUp":
         view.increaseRate();
+        break;
+      case "forwardFrame":
+        view.forwardTick();
+        break;
+      case "backFrame":
+        view.backTick();
         break;
     }
   }

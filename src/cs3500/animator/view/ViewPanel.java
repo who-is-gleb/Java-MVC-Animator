@@ -58,46 +58,62 @@ public class ViewPanel extends JPanel {
     //use tick to get the current tick based on the clock
     //cycle through all the shapes in this animation
     for (Shape s : model.returnShapeList()) {
+
       //does this shape render at all?
-      if (s.changes.size() > 0) {
-        //cycle through movements on this shape
-        for (int i = 0; i < s.changes.size(); i++) {
-          ArrayList<Integer> currentChange = s.changes.get(i);
-          //does the current tick mean to use this movement?
-          if (tick >= currentChange.get(0) && tick <= currentChange.get(8)) {
+      if (s.keyframes.size() > 0) {
+        //cycle through keyframes on this shape
+        for (int i = 0; i < s.keyframes.size() - 1; i++) {
+          ArrayList<Integer> currentKeyframe = s.keyframes.get(i);
 
-            //render the shape at this moment!
+          //is there a next keyframe?
+          if (s.keyframes.indexOf(currentKeyframe) < s.keyframes.size()) {
+            //are we between these keyframes?
+            if (tick >= currentKeyframe.get(0) && tick <= s.keyframes.get(i + 1).get(0)) {
+              //render, while tweening
+              //set up tweening
+              int startTick = currentKeyframe.get(0);
+              int endTick = s.keyframes.get(i + 1).get(0);
 
-            //set up tweening
-            int startTick = currentChange.get(0);
-            int endTick = currentChange.get(8);
+              //set the color for this shape
+              int red = tweener(tick, startTick, currentKeyframe.get(5), endTick,
+                  s.keyframes.get(i + 1).get(5));
+              int green = tweener(tick, startTick, currentKeyframe.get(6), endTick,
+                  s.keyframes.get(i + 1).get(6));
+              int blue = tweener(tick, startTick, currentKeyframe.get(7), endTick,
+                  s.keyframes.get(i + 1).get(7));
+              g2d.setColor(new Color(red, green, blue));
 
-            //set the color for this shape
-            int red = tweener(tick, startTick, currentChange.get(5), endTick,
-                currentChange.get(13));
-            int green = tweener(tick, startTick, currentChange.get(6), endTick,
-                currentChange.get(14));
-            int blue = tweener(tick, startTick, currentChange.get(7), endTick,
-                currentChange.get(15));
-            g2d.setColor(new Color(red, green, blue));
+              //Position and size
+              int x = tweener(tick, startTick, currentKeyframe.get(1) - canvasInfo[0], endTick,
+                  s.keyframes.get(i + 1).get(1) - canvasInfo[0]);
+              int y = tweener(tick, startTick, currentKeyframe.get(2) - canvasInfo[1], endTick,
+                  s.keyframes.get(i + 1).get(2) - canvasInfo[1]);
+              int width = tweener(tick, startTick, currentKeyframe.get(3), endTick,
+                  s.keyframes.get(i + 1).get(3));
+              int height = tweener(tick, startTick, currentKeyframe.get(4), endTick,
+                  s.keyframes.get(i + 1).get(4));
 
-            //Position and size
-            int x = tweener(tick, startTick, currentChange.get(1) - canvasInfo[0], endTick,
-                currentChange.get(9) - canvasInfo[0]);
-            int y = tweener(tick, startTick, currentChange.get(2) - canvasInfo[1], endTick,
-                currentChange.get(10) - canvasInfo[1]);
-            int width = tweener(tick, startTick, currentChange.get(3), endTick,
-                currentChange.get(11));
-            int height = tweener(tick, startTick, currentChange.get(4), endTick,
-                currentChange.get(12));
-
-            //Now draw the shapes!
-            //This is a bad and messy way to handle this, we should change it later if we have time
-            if (s instanceof Rectangle) {
-              g2d.fillRect(x, y, width, height);
-            } else if (s instanceof Ellipse) {
-              g2d.fillOval(x, y, width, height);
+              //Now draw the shapes!
+              //This is a bad and messy way to handle this, we should change it later if we have time
+              if (s instanceof Rectangle) {
+                g2d.fillRect(x, y, width, height);
+              } else if (s instanceof Ellipse) {
+                g2d.fillOval(x, y, width, height);
+              }
             }
+          } else if (s.keyframes.size() == 1 && currentKeyframe.get(0) == tick) {
+            //render for this tick only!
+            g2d.setColor(new Color(s.keyframes.get(i).get(5), s.keyframes.get(i).get(6),
+                s.keyframes.get(i).get(7)));
+            if (s instanceof Rectangle) {
+              g2d.fillRect(s.keyframes.get(i).get(1), s.keyframes.get(i).get(2),
+                  s.keyframes.get(i).get(3), s.keyframes.get(i).get(4));
+            } else if (s instanceof Ellipse) {
+              g2d.fillOval(s.keyframes.get(i).get(1), s.keyframes.get(i).get(2),
+                  s.keyframes.get(i).get(3), s.keyframes.get(i).get(4));
+            }
+
+            System.out.print("rendering solo");
           }
         }
       }
