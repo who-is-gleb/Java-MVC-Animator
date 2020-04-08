@@ -1,11 +1,12 @@
 package cs3500.animator.view;
 
+import java.awt.event.ActionListener;
+import java.io.PrintStream;
+
 import cs3500.excellence.hw05.Ellipse;
 import cs3500.excellence.hw05.ExcellenceOperations;
 import cs3500.excellence.hw05.Rectangle;
 import cs3500.excellence.hw05.Shape;
-import java.awt.event.ActionListener;
-import java.io.PrintStream;
 
 //TODO: Branden, please finish this and write the tests. It didn't work when you wrote it for
 // Assignment 6, so can you fix it for Assignment 7? I've almost everything else so far.
@@ -40,16 +41,6 @@ public class ViewSVG implements ExcellenceView {
   }
 
   @Override
-  public void forwardTick() {
-    throw new UnsupportedOperationException("Can't call forwardTick on this view!");
-  }
-
-  @Override
-  public void backTick() {
-    throw new UnsupportedOperationException("Can't call backTick on this view!");
-  }
-
-  @Override
   public void increaseRate() {
     throw new UnsupportedOperationException("Can't call increaseRate on this view!");
   }
@@ -61,7 +52,7 @@ public class ViewSVG implements ExcellenceView {
 
   @Override
   public void setListener(ActionListener listener) {
-    //throw new UnsupportedOperationException("Can't call setListener on this view!");
+    throw new UnsupportedOperationException("Can't call setListener on this view!");
   }
 
   @Override
@@ -78,7 +69,7 @@ public class ViewSVG implements ExcellenceView {
   public void startView(PrintStream out) {
     out.append(
             "<svg width=\"" + canvasInfo[0] + "\" height=\"" + canvasInfo[3] + "\" version=\"1.1\" "
-                    + "xmnls=\"http://www.w3.org/2000/svg\">\n");
+                    + "xmlns=\"http://www.w3.org/2000/svg\">\n");
     //for every shape
     for (Shape s : model.returnShapeList()) {
       if (s instanceof Rectangle) {
@@ -91,93 +82,80 @@ public class ViewSVG implements ExcellenceView {
         if (s.changes.size() > 0) {
           //for each change in the shape
           for (int i = 0; i < s.changes.size(); i++) {
-            //write that there's a motion belonging to this shape...
-            out.append(
-                    "<animate attributeType=\"xml\" begin=\"" + s.changes.get(i).get(0) + "ms\" dur=\""
-                            + (s.changes.get(i).get(8) - s.changes.get(i).get(0))
-                            + "ms\" attributeName=\"");
-            if (s.changes.get(i).get(1) != s.changes.get(i).get(9)) {
-              out.append(
-                      "x\" from=\"" + s.changes.get(i).get(1) + "\" to=\"" + s.changes.get(i).get(9)
-                              + "\" fill=\"freeze\" />" + "\n");
-            } else if (s.changes.get(i).get(2) != s.changes.get(i).get(10)) {
-              out.append(
-                      "y\" from=\"" + s.changes.get(i).get(2) + "\" to=\"" + s.changes.get(i).get(10)
-                              + "\" fill=\"freeze\" />" + "\n");
-            } else if (s.changes.get(i).get(3) != s.changes.get(i).get(11)) {
-              out.append(
-                      "w\" from=\"" + s.changes.get(i).get(3) + "\" to=\"" + s.changes.get(i).get(11)
-                              + "\" fill=\"freeze\" />" + "\n");
-            } else if (s.changes.get(i).get(4) != s.changes.get(i).get(12)) {
-              out.append(
-                      "h\" from=\"" + s.changes.get(i).get(4) + "\" to=\"" + s.changes.get(i).get(12)
-                              + "\" fill=\"freeze\" />" + "\n");
-            } else if (s.changes.get(i).get(5) != s.changes.get(i).get(13)) {
-              out.append(
-                      "r\" from=\"" + s.changes.get(i).get(5) + "\" to=\"" + s.changes.get(i).get(13)
-                              + "\" fill=\"freeze\" />" + "\n");
-            } else if (s.changes.get(i).get(6) != s.changes.get(i).get(14)) {
-              out.append(
-                      "g\" from=\"" + s.changes.get(i).get(6) + "\" to=\"" + s.changes.get(i).get(14)
-                              + "\" fill=\"freeze\" />" + "\n");
-            } else if (s.changes.get(i).get(7) != s.changes.get(i).get(15)) {
-              out.append(
-                      "b\" from=\"" + s.changes.get(i).get(7) + "\" to=\"" + s.changes.get(i).get(15)
-                              + "\" fill=\"freeze\" />" + "\n");
-            } else if (s instanceof Ellipse) {
-              out.append("<ellipse id=\"" + s.name + "\" cx=\"" + s.changes.get(0).get(1) + "\" cy=\""
-                      + s.changes.get(0).get(2) + "\" rx=\"" + (s.changes.get(0).get(3) / 2) + "\" ry=\"" + (
-                      s.changes.get(0).get(4) / 2) + "\" fill=\"rgb(" + s.changes.get(0).get(5) + "."
-                      + s.changes.get(0).get(6) + "." + s.changes.get(0).get(7)
-                      + ")\" visibility=\"visible\" >" + "\n");
-              if (s.changes.size() > 0) {
-                //for each change in the shape
-                for (int j = 0; j < s.changes.size(); j++) {
-                  out.append(
-                          "<animate attributeType=\"xml\" begin=\"" + s.changes.get(j).get(0) + "ms\" dur=\""
-                                  + (s.changes.get(i).get(8) - s.changes.get(j).get(0))
-                                  + "ms\" attributeName=\"");
-                  if (s.changes.get(i).get(1) != s.changes.get(j).get(9)) {
-                    out.append(
-                            "cx\" from=\"" + s.changes.get(j).get(1) + "\" to=\"" + s.changes.get(j).get(9)
-                                    + "\" fill=\"freeze\" />" + "\n");
-                  } else if (s.changes.get(j).get(2) != s.changes.get(j).get(10)) {
-                    out.append(
-                            "cy\" from=\"" + s.changes.get(j).get(2) + "\" to=\"" + s.changes.get(j).get(10)
-                                    + "\" fill=\"freeze\" />" + "\n");
-                  } else if (s.changes.get(j).get(3) != s.changes.get(j).get(11)) {
-                    out.append("rx\" from=\"" + (s.changes.get(j).get(3) / 2) + "\" to=\"" + (
-                            s.changes.get(j).get(11) / 2) + "\" fill=\"freeze\" />" + "\n");
-                  } else if (s.changes.get(j).get(4) != s.changes.get(j).get(12)) {
-                    out.append("ry\" from=\"" + (s.changes.get(j).get(4) / 2) + "\" to=\"" + (
-                            s.changes.get(j).get(12) / 2) + "\" fill=\"freeze\" />" + "\n");
-                  } else if (s.changes.get(j).get(5) != s.changes.get(j).get(13)) {
-                    out.append(
-                            "r\" from=\"" + s.changes.get(j).get(5) + "\" to=\"" + s.changes.get(j).get(13)
-                                    + "\" fill=\"freeze\" />" + "\n");
-                  } else if (s.changes.get(j).get(6) != s.changes.get(j).get(14)) {
-                    out.append(
-                            "g\" from=\"" + s.changes.get(j).get(6) + "\" to=\"" + s.changes.get(j).get(14)
-                                    + "\" fill=\"freeze\" />" + "\n");
-                  } else if (s.changes.get(j).get(7) != s.changes.get(j).get(15)) {
-                    out.append(
-                            "b\" from=\"" + s.changes.get(j).get(7) + "\" to=\"" + s.changes.get(j).get(15)
-                                    + "\" fill=\"freeze\" />" + "\n");
-                  }
+            for (int k = 1; k < (s.changes.get(i).size() / 2); k++) {
+              if (!s.changes.get(i).get(k).equals(s.changes.get(i).get(k + 8))) {
+                out.append(
+                        "<animate attributeType=\"xml\" begin=\"" + s.changes.get(i).get(0) + "ms\" dur=\""
+                                + (s.changes.get(i).get(8) - s.changes.get(i).get(0))
+                                + "ms\" attributeName=\"");
+                if (k == 1) {
+                  out.append("x\" from=\"" + s.changes.get(i).get(k) + "\" to=\"" + s.changes.get(i).get(k + 8)
+                          + "\" fill=\"freeze\" />" + "\n");
+                } else if (k == 2) {
+                  out.append("y\" from=\"" + s.changes.get(i).get(k) + "\" to=\"" + s.changes.get(i).get(k + 8)
+                          + "\" fill=\"freeze\" />" + "\n");
+                } else if (k == 3) {
+                  out.append("w\" from=\"" + s.changes.get(i).get(k) + "\" to=\"" + s.changes.get(i).get(k + 8)
+                          + "\" fill=\"freeze\" />" + "\n");
+                } else if (k == 4) {
+                  out.append("h\" from=\"" + s.changes.get(i).get(k) + "\" to=\"" + s.changes.get(i).get(k + 8)
+                          + "\" fill=\"freeze\" />" + "\n");
+                } else if (k == 5) {
+                  out.append("r\" from=\"" + s.changes.get(i).get(k) + "\" to=\"" + s.changes.get(i).get(k + 8)
+                          + "\" fill=\"freeze\" />" + "\n");
+                } else if (k == 6) {
+                  out.append("g\" from=\"" + s.changes.get(i).get(k) + "\" to=\"" + s.changes.get(i).get(k + 8)
+                          + "\" fill=\"freeze\" />" + "\n");
+                } else if (k == 7) {
+                  out.append("b\" from=\"" + s.changes.get(i).get(k) + "\" to=\"" + s.changes.get(i).get(k + 8)
+                          + "\" fill=\"freeze\" />" + "\n");
                 }
               }
-              //if there are movements
-
             }
           }
-          if (s instanceof Rectangle) {
-            out.append("</rect>" + "\n");
-          } else if (s instanceof Ellipse) {
-            out.append("</ellipse>" + "\n");
+          out.append("</rect>" + "\n");
+        }
+      } else if (s instanceof Ellipse) {
+        out.append("<ellipse id=\"" + s.name + "\" cx=\"" + s.changes.get(0).get(1) + "\" cy=\""
+                + s.changes.get(0).get(2) + "\" rx=\"" + (s.changes.get(0).get(3) / 2) + "\" ry=\"" + (
+                s.changes.get(0).get(4) / 2) + "\" fill=\"rgb(" + s.changes.get(0).get(5) + "."
+                + s.changes.get(0).get(6) + "." + s.changes.get(0).get(7)
+                + ")\" visibility=\"visible\" >" + "\n");
+        if (s.changes.size() > 0) {
+          //for each change in the shape
+          for (int j = 0; j < s.changes.size(); j++) {
+            for (int f = 1; f < (s.changes.get(j).size() / 2); f++)
+              if (!s.changes.get(j).get(f).equals(s.changes.get(j).get(f + 8))) {
+                out.append(
+                        "<animate attributeType=\"xml\" begin=\"" + s.changes.get(j).get(0) + "ms\" dur=\""
+                                + (s.changes.get(j).get(8) - s.changes.get(j).get(0))
+                                + "ms\" attributeName=\"");
+                if (f == 1) {
+                  out.append("cx\" from=\"");
+                } else if (f == 2) {
+                  out.append("cy\" from=\"");
+                } else if (f == 4) {
+                  out.append("rx\" from=\"");
+                } else if (f == 5) {
+                  out.append("ry\" from=\"");
+                } else if (f == 6) {
+                  out.append("r\" from=\"");
+                } else if (f == 7) {
+                  out.append("g\" from=\"");
+                } else if (f == 8) {
+                  out.append("b\" from=\"");
+                }
+
+                out.append(s.changes.get(j).get(f) + "\" to=\"" + s.changes.get(j).get(f + 8)
+                                + "\" fill=\"freeze\" />" + "\n");
+              }
           }
         }
-        out.append("</svg>");
+        out.append("</ellipse>" + "\n");
       }
     }
+    out.append("</svg>");
   }
+
+
 }
