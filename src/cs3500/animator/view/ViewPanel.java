@@ -112,8 +112,6 @@ public class ViewPanel extends JPanel {
               g2d.fillOval(s.keyframes.get(i).get(1), s.keyframes.get(i).get(2),
                   s.keyframes.get(i).get(3), s.keyframes.get(i).get(4));
             }
-
-            System.out.print("rendering solo");
           }
         }
       }

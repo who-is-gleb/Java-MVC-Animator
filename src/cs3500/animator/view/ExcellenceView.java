@@ -89,4 +89,34 @@ public interface ExcellenceView {
    * @param out The PrintStream we're outputting to
    */
   void startView(PrintStream out);
+
+  /**
+   * Returns the current typed in string in the name field of the view.
+   *
+   * @return a string that will be used by the controller for modifying the data in the model
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  String getNameField();
+
+  /**
+   * Send a signal to the view that the list of shapes needs to be updated.
+   *
+   * @throws UnsupportedOperationException if this view does not support this.
+   */
+  void updateShapeNames();
+
+  /**
+   * Returns the current tick, so the controller can know what ticks to hand the model.
+   *
+   * @return the current tick.
+   */
+  int getTick();
+
+  /**
+   * Sends the current keyframe arguments from the view to the controller, for use in
+   * adding/modifying keyframes.
+   *
+   * @return an array representing the x, y, w, h, r, g, and b of a desired keyframe
+   */
+  int[] getKeyframeArguments();
 }

@@ -98,4 +98,24 @@ public class ViewText implements ExcellenceView {
       }
     }
   }
+
+  @Override
+  public String getNameField() {
+    throw new UnsupportedOperationException("Can't call getNameField on this view!");
+  }
+
+  @Override
+  public void updateShapeNames() {
+    throw new UnsupportedOperationException("Can't call updateShapeNames on this view!");
+  }
+
+  @Override
+  public int getTick() {
+    throw new UnsupportedOperationException("Can't call getTick on this view!");
+  }
+
+  @Override
+  public int[] getKeyframeArguments() {
+    throw new UnsupportedOperationException("Can't call getKeyframeArguments on this view!");
+  }
 }

@@ -1,10 +1,12 @@
 package cs3500.animator.view;
 
 import cs3500.excellence.hw05.ExcellenceOperations;
+import cs3500.excellence.hw05.Shape;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
+import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
@@ -115,5 +117,25 @@ public class ViewAnimation extends JFrame implements ExcellenceView {
 
     //start the clock, and by extension the animation
     timer.start();
+  }
+
+  @Override
+  public String getNameField() {
+    throw new UnsupportedOperationException("Can't call getNameField on this view!");
+  }
+
+  @Override
+  public void updateShapeNames() {
+    throw new UnsupportedOperationException("Can't call updateShapeNames on this view!");
+  }
+
+  @Override
+  public int getTick() {
+    throw new UnsupportedOperationException("Can't call getTick on this view!");
+  }
+
+  @Override
+  public int[] getKeyframeArguments() {
+    throw new UnsupportedOperationException("Can't call getKeyframeArguments on this view!");
   }
 }

@@ -1,19 +1,25 @@
 package cs3500.animator.view;
 
-import cs3500.animator.controller.EditController;
 import cs3500.excellence.hw05.ExcellenceOperations;
 import cs3500.excellence.hw05.Shape;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.io.PrintStream;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JList;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.Timer;
+import javax.swing.event.ListSelectionListener;
 
 /**
  * The Editor view for our animation program. Displays a fully animated version of the given
@@ -30,10 +36,17 @@ public class ViewEditor extends JFrame implements ExcellenceView {
 
   Timer timer;
 
-  private JPanel bottomPanel, framePanel, buttonPanel;
+  private JPanel bottomPanel, framePanel, buttonPanel, editPanel, editLeft, editRight,
+      keyframePanel, keyframeMain, keyframeInputGrid;
   private JButton backFrameButton, forwardFrameButton, playPauseButton, toggleLoopButton,
-      restartButton, speedUpButton, speedDownButton;
-  private JLabel currentFrame, currentTickRate;
+      restartButton, speedUpButton, speedDownButton, addRectButton, addEllipseButton,
+      removeShapeButton, addEditButton, removeKeyButton;
+  private JLabel currentFrame, currentTickRate, nameInstructions, xText, yText, wText, hText, rText,
+      gText, bText;
+  private JTextField nameField, xField, yField, widthField, heightField, redField, greenField,
+      blueField;
+  private JScrollPane shapeList;
+  private JList shapeNames;
   private ExcellenceOperations model;
 
   /**
@@ -124,8 +137,114 @@ public class ViewEditor extends JFrame implements ExcellenceView {
     speedUpButton.setActionCommand("speedUp");
     buttonPanel.add(speedUpButton);
 
+    //set up the edit controls panel
+    editPanel = new JPanel();
+    editPanel.setLayout(new GridLayout(0, 2));
+    bottomPanel.add(editPanel);
+
+    editLeft = new JPanel();
+    editLeft.setLayout(new GridLayout(5, 1));
+    editPanel.add(editLeft);
+
+    editRight = new JPanel();
+    editRight.setLayout(new GridLayout(0, 1));
+    editPanel.add(editRight);
+
+    //show the current rate
+    nameInstructions = new JLabel("Name of shape to Add/Edit/Remove");
+    editLeft.add(nameInstructions);
+
+    //set up the name field for adding/removing
+    nameField = new JTextField(20);
+    editLeft.add(nameField);
+
+    //Add and remove buttons
+    addRectButton = new JButton("Add Rectangle with given name");
+    addRectButton.setActionCommand("addRect");
+    editLeft.add(addRectButton);
+    addEllipseButton = new JButton("Add Ellipse with given name");
+    addEllipseButton.setActionCommand("addEllipse");
+    editLeft.add(addEllipseButton);
+    removeShapeButton = new JButton("Remove selected Shape");
+    removeShapeButton.setActionCommand("removeShape");
+    editLeft.add(removeShapeButton);
+
+    //set up shape list
+    DefaultListModel<String> dataForListOfStrings = new DefaultListModel<>();
+    for (Shape s : model.returnShapeList()) {
+      dataForListOfStrings.addElement(s.name);
+    }
+    shapeNames = new JList<>(dataForListOfStrings);
+    shapeNames.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    editRight.add(new JScrollPane(shapeNames));
+
+    //set up keyframe editor
+    keyframePanel = new JPanel();
+    keyframePanel.setLayout(new GridLayout(2, 0));
+    bottomPanel.add(keyframePanel);
+
+    //Main edit buttons
+    keyframeMain = new JPanel();
+    keyframeMain.setLayout(new FlowLayout());
+    keyframePanel.add(keyframeMain);
+
+    addEditButton = new JButton("Add/Edit Keyframe on current Shape and Tick");
+    addEditButton.setActionCommand("addKey");
+    keyframeMain.add(addEditButton);
+
+    removeKeyButton = new JButton("Remove Keyframe on current Shape and Tick");
+    removeKeyButton.setActionCommand("removeKey");
+    keyframeMain.add(removeKeyButton);
+
+    //Input grid
+    keyframeInputGrid = new JPanel();
+    keyframeInputGrid.setLayout(new GridLayout(2, 7));
+    keyframePanel.add(keyframeInputGrid);
+
+    xText = new JLabel("X:");
+    keyframeInputGrid.add(xText);
+
+    yText = new JLabel("Y:");
+    keyframeInputGrid.add(yText);
+
+    wText = new JLabel("Width:");
+    keyframeInputGrid.add(wText);
+
+    hText = new JLabel("Height:");
+    keyframeInputGrid.add(hText);
+
+    rText = new JLabel("Red:");
+    keyframeInputGrid.add(rText);
+
+    gText = new JLabel("Green:");
+    keyframeInputGrid.add(gText);
+
+    bText = new JLabel("Blue:");
+    keyframeInputGrid.add(bText);
+
+    xField = new JTextField(2);
+    keyframeInputGrid.add(xField);
+
+    yField = new JTextField(2);
+    keyframeInputGrid.add(yField);
+
+    widthField = new JTextField(2);
+    keyframeInputGrid.add(widthField);
+
+    heightField = new JTextField(2);
+    keyframeInputGrid.add(heightField);
+
+    redField = new JTextField(2);
+    keyframeInputGrid.add(redField);
+
+    greenField = new JTextField(2);
+    keyframeInputGrid.add(greenField);
+
+    blueField = new JTextField(2);
+    keyframeInputGrid.add(blueField);
+
     //set up the rest of the frame
-    bottomPanel.setPreferredSize(new Dimension(600, 100));
+    bottomPanel.setPreferredSize(new Dimension(600, 350));
     this.pack();
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
@@ -161,7 +280,7 @@ public class ViewEditor extends JFrame implements ExcellenceView {
 
   @Override
   public void backTick() {
-    tick =  tick - 1;
+    tick = tick - 1;
     if (tick < 0) {
       tick = 0;
     }
@@ -194,6 +313,12 @@ public class ViewEditor extends JFrame implements ExcellenceView {
     speedUpButton.addActionListener(listener);
     backFrameButton.addActionListener(listener);
     forwardFrameButton.addActionListener(listener);
+    addRectButton.addActionListener(listener);
+    addEllipseButton.addActionListener(listener);
+    removeShapeButton.addActionListener(listener);
+    addEditButton.addActionListener(listener);
+    removeKeyButton.addActionListener(listener);
+    shapeNames.addListSelectionListener((ListSelectionListener) listener);
   }
 
   @Override
@@ -225,8 +350,10 @@ public class ViewEditor extends JFrame implements ExcellenceView {
       //figure out if we're past the end
       int highestTick = 0;
       for (Shape s : model.returnShapeList()) {
-        if (highestTick < s.keyframes.get(s.keyframes.size() - 1).get(0)) {
-          highestTick = s.keyframes.get(s.keyframes.size() - 1).get(0);
+        if (s.keyframes.size() > 0) {
+          if (highestTick < s.keyframes.get(s.keyframes.size() - 1).get(0)) {
+            highestTick = s.keyframes.get(s.keyframes.size() - 1).get(0);
+          }
         }
       }
       //if we're past the end, loop!
@@ -238,6 +365,7 @@ public class ViewEditor extends JFrame implements ExcellenceView {
       toggleLoopButton.setOpaque(false);
     }
 
+    //update the tick display each refresh
     currentFrame.setText("Current Frame: " + tick);
 
     //actually do the rendering with the panel
@@ -254,5 +382,44 @@ public class ViewEditor extends JFrame implements ExcellenceView {
     //Start the clock
     timer.start();
 
+  }
+
+  @Override
+  public String getNameField() {
+    String name = nameField.getText();
+    nameField.setText("");
+    return name;
+  }
+
+  @Override
+  public void updateShapeNames() {
+    //update the shape names
+    DefaultListModel<String> data = new DefaultListModel<>();
+    for (Shape s : model.returnShapeList()) {
+      data.addElement(s.name);
+    }
+    System.out.print(data);
+    shapeNames.setModel(data);
+  }
+
+  @Override
+  public int getTick() {
+    return tick;
+  }
+
+  @Override
+  public int[] getKeyframeArguments() {
+    int[] temp = new int[]{Integer.parseInt(xField.getText()), Integer.parseInt(yField.getText()),
+        Integer.parseInt(widthField.getText()), Integer.parseInt(heightField.getText()),
+        Integer.parseInt(redField.getText()), Integer.parseInt(greenField.getText()),
+        Integer.parseInt(blueField.getText())};
+    xField.setText("");
+    yField.setText("");
+    widthField.setText("");
+    heightField.setText("");
+    redField.setText("");
+    greenField.setText("");
+    blueField.setText("");
+    return temp;
   }
 }
